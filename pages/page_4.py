@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import numpy as np
 
 st.header('Plot map')
 df3 = pd.DataFrame(
@@ -7,3 +8,5 @@ df3 = pd.DataFrame(
     columns=['lat', 'lon',]
 )
 st.map(df3)
+
+
