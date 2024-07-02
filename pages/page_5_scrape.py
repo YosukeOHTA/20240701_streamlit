@@ -5,7 +5,6 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.service import Service
 import streamlit as st
 from  selenium.webdriver.chrome.options import Options
-import time
 
 with st.form(key='Library check'):
     st.header('Library check')
