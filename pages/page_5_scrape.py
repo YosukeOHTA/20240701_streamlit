@@ -28,10 +28,10 @@ with st.form(key='Library check'):
             history2 = np.zeros((0,4))
             col2 = ['userID', 'status', 'bookName', 'author',]
 
-            driver = webdriver.Chrome(service=Service(), options=webdriver.ChromeOptions())
-            # chrome_options = Options()
-            # chrome_options.add_argument("--headless")
-            # driver = webdriver.Chrome(service=Service(), options=chrome_options)
+            # driver = webdriver.Chrome(service=Service(), options=webdriver.ChromeOptions())
+            chrome_options = Options()
+            chrome_options.add_argument("--headless")
+            driver = webdriver.Chrome(service=Service(), options=chrome_options)
 
             for libId in libIdList:
                 st.write(f'{libId}の確認中')
