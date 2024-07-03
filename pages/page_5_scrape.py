@@ -31,10 +31,15 @@ with st.form(key='Library check'):
 
             # driver = webdriver.Chrome(service=Service(), options=webdriver.ChromeOptions())
 
-            driver_path = ChromeDriverManager().install()
+            # driver_path = ChromeDriverManager().install()
+            # chrome_options = Options()
+            # chrome_options.add_argument("--headless")
+            # driver = webdriver.Chrome(service=Service(executable_path=driver_path), options=chrome_options)
+
             chrome_options = Options()
             chrome_options.add_argument("--headless")
-            driver = webdriver.Chrome(service=Service(executable_path=driver_path), options=chrome_options)
+            driver = webdriver.Chrome(service=Service(), options=chrome_options)
+
 
             for libId in libIdList:
                 st.write(f'{libId}の確認中')
