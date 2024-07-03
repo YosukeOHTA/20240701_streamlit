@@ -1,10 +1,11 @@
 import numpy as np
 import pandas as pd
 from selenium import webdriver
-from selenium.webdriver.common.by import By
+from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
 import streamlit as st
-from  selenium.webdriver.chrome.options import Options
 
 with st.form(key='Library check'):
     st.header('Library check')
@@ -29,9 +30,11 @@ with st.form(key='Library check'):
             col2 = ['userID', 'status', 'bookName', 'author',]
 
             # driver = webdriver.Chrome(service=Service(), options=webdriver.ChromeOptions())
+
+            driver_path = ChromeDriverManager().install()
             chrome_options = Options()
             chrome_options.add_argument("--headless")
-            driver = webdriver.Chrome(service=Service(), options=chrome_options)
+            driver = webdriver.Chrome(service=Service(executable_path=driver_path), options=chrome_options)
 
             for libId in libIdList:
                 st.write(f'{libId}の確認中')
