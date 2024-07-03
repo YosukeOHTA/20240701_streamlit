@@ -2,10 +2,13 @@ import numpy as np
 import pandas as pd
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.chrome import service as fs
+from webdriver_manager.core.os_manager import ChromeType
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 import streamlit as st
+
 
 with st.form(key='Library check'):
     st.header('Library check')
@@ -36,13 +39,33 @@ with st.form(key='Library check'):
             # chrome_options.add_argument("--headless")
             # driver = webdriver.Chrome(service=Service(executable_path=driver_path), options=chrome_options)
 
+            # chrome_options = Options()
+            # chrome_options.add_argument("--headless")
+            # driver = webdriver.Chrome(service=Service(), options=chrome_options,)
+
+            # CHROMEDRIVER = ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install()
+            # service = fs.Service(CHROMEDRIVER)
+            # chrome_options = Options()
+            # chrome_options.add_argument("--headless")
+            # driver = webdriver.Chrome(service=service, options=chrome_options)
+
+            # chrome_options = Options()
+            # chrome_options.add_argument("--headless")
+            # driver = webdriver.Chrome(ChromeDriverManager().install(), service=Service(), options=chrome_options )
+            # driver = webdriver.Chrome(ChromeDriverManager().install())
+
             chrome_options = Options()
             chrome_options.add_argument("--headless")
-            driver = webdriver.Chrome(service=Service(), options=chrome_options)
+            # option設定を追加（設定する理由はメモリの削減）
+            chrome_options.add_argument('--disable-gpu')
+            chrome_options.add_argument('--no-sandbox')
+            chrome_options.add_argument('--disable-dev-shm-usage')
+
+            driver = webdriver.Chrome(options=chrome_options, service=Service())
 
 
             for libId in libIdList:
-                st.write(f'{libId}の確認中')
+                st.write(f'Library ID :{libId} の確認中')
                 driver.get('https://opac.lib.city.yokohama.lg.jp/winj/opac/top.do')
                 driver.find_element(By.XPATH, '/html/body/div[1]/div/div[2]/ul/li/a').click()
                 driver.find_element(By.XPATH, '/html/body/div[2]/div/div[1]/div/form/dl/dd[1]/input').send_keys(libId)
