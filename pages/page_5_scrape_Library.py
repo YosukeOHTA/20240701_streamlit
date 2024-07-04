@@ -9,18 +9,18 @@ import streamlit as st
 with st.form(key='Library check'):
     st.header('Library check')
     # text box
-    libIdList = st.multiselect(
+    libIdList1 = st.multiselect(
         'Library ID',
         ['9027551499', '9027551502', '9027551510', ],
         ['9027551499', '9027551502', '9027551510', ]
     )
-    libPw = st.text_input('Library password')
+    libPw1 = st.text_input('Library password')
 
     # button
     submit_btn = st.form_submit_button('送信')
     cancel_btn = st.form_submit_button('キャンセル')
     if submit_btn:
-        if len(libPw)==0:
+        if len(libPw1)==0:
             st.write('Input password')
         else:
             history1 = np.zeros((0,4))
@@ -35,12 +35,12 @@ with st.form(key='Library check'):
             chrome_options.add_argument("--disable-gpu")
 
             driver = webdriver.Chrome(options=chrome_options)
-            for libId in libIdList:
+            for libId in libIdList1:
                 st.write(f'Library ID :{libId} の確認中')
                 driver.get('https://opac.lib.city.yokohama.lg.jp/winj/opac/top.do')
                 driver.find_element(By.XPATH, '/html/body/div[1]/div/div[2]/ul/li/a').click()
                 driver.find_element(By.XPATH, '/html/body/div[2]/div/div[1]/div/form/dl/dd[1]/input').send_keys(libId)
-                driver.find_element(By.XPATH, '/html/body/div[2]/div/div[1]/div/form/dl/dd[2]/input').send_keys(libPw)
+                driver.find_element(By.XPATH, '/html/body/div[2]/div/div[1]/div/form/dl/dd[2]/input').send_keys(libPw1)
                 driver.find_element(By.XPATH, '/html/body/div[2]/div/div[1]/div/form/input').click()
                 # Myライブラリ
                 driver.find_element(By.XPATH, '/html/body/div[1]/div/div[1]/ul/li[7]/a').click()
@@ -77,23 +77,81 @@ with st.form(key='Library check'):
                 driver.find_element(By.XPATH, '/html/body/div[1]/div/div/div/a').click()
             driver.close()
             df1 = pd.DataFrame(history1, columns=col1).drop_duplicates()
-            # df2 = pd.read_excel(r"D:\OneDrive - yo\YO06_IT_Skill\01_Python\01_Scraping\20220122_libralyBooks\20240120_bookHistory.xlsx")
-            # df3 = pd.concat([df1, df2]).drop_duplicates(ignore_index=True)
-            # df3.to_excel(r"D:\OneDrive - yo\YO06_IT_Skill\01_Python\01_Scraping\20220122_libralyBooks\20240120_bookHistory.xlsx", index=False)
-            df4 = pd.DataFrame(history2, columns=col2)
-            for i in df4.index:
-                if '回送中' in df4.loc[i, 'status']:
-                    df4.loc[i, 'status']='0'
-                if '受取可' in df4.loc[i, 'status']:
-                    df4.loc[i, 'status']='0'
-            df4['status'] = df4['status'].astype('int')
+            df2 = pd.DataFrame(history2, columns=col2)
+            for i in df2.index:
+                if '回送中' in df2.loc[i, 'status']:
+                    df2.loc[i, 'status']='0'
+                if '受取可' in df2.loc[i, 'status']:
+                    df2.loc[i, 'status']='0'
+            df2['status'] = df2['status'].astype('int')
             st.subheader('借りている本')
             st.dataframe(df1.sort_values(['byDate', 'userID', 'bookName']))
             st.subheader('予約している本')
-            st.dataframe(df4.sort_values(['status', 'bookName', ], ascending=True))
+            st.dataframe(df2.sort_values(['status', 'bookName', ], ascending=True))
 
-with st.form(key='Otenki check'):
-    st.header('Otenki check')
+with st.form(key='eLibrary check'):
+    st.header('eLibrary check')
+    # text box
+    libIdList2 = st.multiselect(
+        'Library ID',
+        ['9027551499', '9027551502', '9027551510', ],
+        ['9027551499', '9027551502', '9027551510', ]
+    )
+    libPw2 = st.text_input('Library password')
+
     # button
     submit_btn = st.form_submit_button('送信')
     cancel_btn = st.form_submit_button('キャンセル')
+    if submit_btn:
+        if len(libPw2)==0:
+            st.write('Input password')
+        else:
+            history3 = np.zeros((0,4))
+            col3 = ['userID', 'byDate', 'bookName', 'author',]
+            history4 = np.zeros((0,3))
+            col4 = ['userID', 'status', 'bookName', ]
+
+            chrome_options = Options()
+            chrome_options.add_argument("--headless")
+            chrome_options.add_argument("--no-sandbox")
+            chrome_options.add_argument("--disable-dev-shm-usage")
+            chrome_options.add_argument("--disable-gpu")
+
+            driver = webdriver.Chrome(options=chrome_options)
+            for libId in libIdList2:
+                st.write(f'Library ID :{libId} の確認中')
+                driver.get('https://web.d-library.jp/yokohama/g0101/top/')
+                driver.find_element(By.XPATH, '/html/body/div[2]/div/div[1]/div[1]/div[1]/form/table/tbody/tr[1]/td/input').send_keys(libId)
+                driver.find_element(By.XPATH, '/html/body/div[2]/div/div[1]/div[1]/div[1]/form/table/tbody/tr[2]/td/input[1]').send_keys(libPw2)
+                driver.find_element(By.XPATH, '/html/body/div[2]/div/div[1]/div[1]/div[1]/form/table/tbody/tr[3]/td/button').click()
+                driver.find_element(By.XPATH, '/html/body/div[2]/div/div[1]/div[1]/div[1]/div/table/tbody/tr[1]/td/a').click()
+                # 貸出中の本
+                numRental = int(driver.find_element(By.XPATH, '/html/body/div[2]/div/div[2]/div[2]/div[1]/div/h2/span/em/span[1]').text)
+                if numRental != 0:
+                    for i in range(numRental):
+                        item3 = np.array([
+                            libId,
+                            driver.find_element(By.XPATH, f'/html/body/div[2]/div/div[2]/div[2]/div[1]/div/div/ul/li[{i+1}]/div/div[2]/div[1]/dl[2]/dd').text,
+                            driver.find_element(By.XPATH, f'/html/body/div[2]/div/div[2]/div[2]/div[1]/div/div/ul/li[{i+1}]/div/div[2]/div[1]/a').text,
+                            driver.find_element(By.XPATH, f'/html/body/div[2]/div/div[2]/div[2]/div[1]/div/div/ul/li[{i+1}]/div/div[2]/div[1]/dl[1]/dd').text,
+                        ])
+                        history3 = np.vstack((history3, item3))
+                # 予約中の本
+                numBook = int(driver.find_element(By.XPATH, '/html/body/div[2]/div/div[2]/div[2]/div[2]/div/h2/span/em/span[1]').text)
+                if numBook !=0:
+                    for i in range(numBook):
+                        item4 = np.array([
+                            libId,
+                            driver.find_element(By.XPATH, f'/html/body/div[2]/div/div[2]/div[2]/div[2]/div/div/ul/li[{i+1}]/div/div[2]/div/dl[2]/dd[2]').text,
+                            driver.find_element(By.XPATH, f'/html/body/div[2]/div/div[2]/div[2]/div[2]/div/div/ul/li[{i+1}]/div/div[2]/div/a').text,
+                        ])
+                        history4 = np.vstack((history4, item4))
+                # ログアウト
+                driver.find_element(By.XPATH, '/html/body/div[2]/div/div[1]/div[1]/div[1]/table/tbody/tr[2]/td/a').click()
+            driver.close()
+            df3 = pd.DataFrame(history3, columns=col3).drop_duplicates()
+            df4 = pd.DataFrame(history4, columns=col4)
+            st.subheader('借りている本')
+            st.dataframe(df3.sort_values(['byDate', 'userID', 'bookName']))
+            st.subheader('予約している本')
+            st.dataframe(df4.sort_values(['status', 'bookName', ], ascending=True))
