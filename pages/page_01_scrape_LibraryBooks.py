@@ -82,7 +82,9 @@ with st.form(key='Library check'):
             # df3.to_excel(r"D:\OneDrive - yo\YO06_IT_Skill\01_Python\01_Scraping\20220122_libralyBooks\20240120_bookHistory.xlsx", index=False)
             df4 = pd.DataFrame(history2, columns=col2)
             for i in df4.index:
-                if df4.loc[i, 'status']=='受取館へ回送中  ':
+                if '回送中' in df4.loc[i, 'status']:
+                    df4.loc[i, 'status']='0'
+                if '受取可' in df4.loc[i, 'status']:
                     df4.loc[i, 'status']='0'
             df4['status'] = df4['status'].astype('int')
             st.subheader('借りている本')
