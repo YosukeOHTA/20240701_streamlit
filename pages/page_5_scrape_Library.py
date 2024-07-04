@@ -7,7 +7,8 @@ import streamlit as st
 
 
 with st.form(key='Library check'):
-    st.header('Library check')
+    url1 = "https://opac.lib.city.yokohama.lg.jp/winj/opac/login.do"
+    st.header(f'Library check [link]({url1})')
     # text box
     libIdList1 = st.multiselect(
         'Library ID',
@@ -90,7 +91,8 @@ with st.form(key='Library check'):
             st.dataframe(df2.sort_values(['status', 'bookName', ], ascending=True))
 
 with st.form(key='eLibrary check'):
-    st.header('eLibrary check')
+    url2 = "https://web.d-library.jp/yokohama/g0101/top/"
+    st.header(f'eLibrary check [link]({url2})')
     # text box
     libIdList2 = st.multiselect(
         'Library ID',
