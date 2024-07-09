@@ -10,18 +10,22 @@ chrome_options.add_argument("--no-sandbox")
 chrome_options.add_argument("--disable-dev-shm-usage")
 chrome_options.add_argument("--disable-gpu")
 
+with st.form(key='Library check'):
+    st.header(f'basic scrape')
+    submit_btn = st.form_submit_button('送信')
+    cancel_btn = st.form_submit_button('キャンセル')
+    if submit_btn: 
+        #Open new browser window
+        driver = webdriver.Chrome(options=chrome_options)
 
-#Open new browser window
-driver = webdriver.Chrome(options=chrome_options)
+        #Browser goes to auth_url
+        driver.get('http://example.com')
 
-#Browser goes to auth_url
-driver.get('http://example.com')
+        # #Sets up waiting until the second url to copy the new url
+        # wait = WebDriverWait(driver, 170)
+        # wait.until(EC.url_contains("code="))
+        # url = driver.current_url
 
-# #Sets up waiting until the second url to copy the new url
-# wait = WebDriverWait(driver, 170)
-# wait.until(EC.url_contains("code="))
-# url = driver.current_url
-
-#closes window
-driver.close()
-st.write('done')
+        #closes window
+        driver.close()
+        st.write('done')

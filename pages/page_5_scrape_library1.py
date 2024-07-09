@@ -1,3 +1,4 @@
+import json
 import numpy as np
 import pandas as pd
 from selenium import webdriver
@@ -15,7 +16,7 @@ with st.form(key='Library check'):
         ['9027551499', '9027551502', '9027551510', ],
         ['9027551499', '9027551502', '9027551510', ]
     )
-    libPw1 = st.text_input('Library password')
+    libPw1 = st.text_input('Library password', type='password')
 
     # button
     submit_btn = st.form_submit_button('送信')
@@ -99,7 +100,7 @@ with st.form(key='eLibrary check'):
         ['9027551499', '9027551502', '9027551510', ],
         ['9027551499', '9027551502', '9027551510', ]
     )
-    libPw2 = st.text_input('Library password')
+    libPw2 = st.text_input('Library password', type='password')
 
     # button
     submit_btn = st.form_submit_button('送信')

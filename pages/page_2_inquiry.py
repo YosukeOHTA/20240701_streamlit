@@ -5,6 +5,7 @@ with st.form(key='profile_form'):
     # text box
     name = st.text_input('名前')
     address = st.text_input('住所')
+    password = st.text_input('password', type='password')
 
     # select box
     age_category = st.selectbox(
