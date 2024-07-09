@@ -25,6 +25,7 @@ with st.form(key='Library check'):
     submit_btn = st.form_submit_button('送信')
     cancel_btn = st.form_submit_button('キャンセル')
     if submit_btn:
+        progress_bar = st.progress(0)
         history1 = np.zeros((0,4))
         col1 = ['userID', 'byDate', 'bookName', 'author',]
         history2 = np.zeros((0,4))
@@ -37,7 +38,8 @@ with st.form(key='Library check'):
         chrome_options.add_argument("--disable-gpu")
 
         driver = webdriver.Chrome(options=chrome_options)
-        for libId in libIdList1:
+        for i, libId in enumerate(libIdList1):
+            progress_bar.progress((i+1)/len(libIdList1))
             st.write(f'Library ID :{libId} の確認中')
             driver.get('https://opac.lib.city.yokohama.lg.jp/winj/opac/top.do')
             driver.find_element(By.XPATH, '/html/body/div[1]/div/div[2]/ul/li/a').click()
@@ -105,6 +107,7 @@ with st.form(key='eLibrary check'):
     submit_btn = st.form_submit_button('送信')
     cancel_btn = st.form_submit_button('キャンセル')
     if submit_btn:
+        progress_bar = st.progress(0)
         history3 = np.zeros((0,4))
         col3 = ['userID', 'byDate', 'bookName', 'author',]
         history4 = np.zeros((0,3))
@@ -117,7 +120,8 @@ with st.form(key='eLibrary check'):
         chrome_options.add_argument("--disable-gpu")
 
         driver = webdriver.Chrome(options=chrome_options)
-        for libId in libIdList2:
+        for i, libId in enumerate(libIdList2):
+            progress_bar.progress((i+1)/len(libIdList2))
             st.write(f'Library ID :{libId} の確認中')
             driver.get('https://web.d-library.jp/yokohama/g0101/top/')
             driver.find_element(By.XPATH, '/html/body/div[2]/div/div[1]/div[1]/div[1]/form/table/tbody/tr[1]/td/input').send_keys(libId)
