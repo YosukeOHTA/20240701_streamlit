@@ -5,8 +5,8 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 import streamlit as st
+import time
 
-import json
 f = open('../../userinfo.json', 'r')
 json_dict = json.load(f)
 libPw = json_dict['library1']['passWord']
@@ -62,6 +62,7 @@ with st.form(key='Library check'):
                     history1 = np.vstack((history1, item1))
             # Myライブラリ
             driver.find_element(By.XPATH, '/html/body/div[1]/div/div[1]/ul/li[7]/a').click()
+            time.sleep(1)
             # 予約中の本
             driver.find_element(By.XPATH, '/html/body/div[2]/div[1]/ul/li[2]/a/dl/dt').click()
             if driver.find_element(By.XPATH, '/html/body/div[2]/div[1]').text != '予約中の本\n有効予約一覧\n取消済予約一覧\n該当するリストが存在しません。':

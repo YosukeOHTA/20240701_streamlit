@@ -10,7 +10,7 @@ st.header('Plot map')
 #     columns=['lat', 'lon',])
 
 
-
+st.subheader('folium.Map')
 m = folium.Map(
     # 地図の中心位置の指定(今回は栃木県の県庁所在地を指定)
     location=[43.07076877001753, 141.35328401349244], 
@@ -26,10 +26,10 @@ folium.Marker(
     popup=folium.Popup(pop, max_width=300),
     icon=folium.Icon(icon='home', icon_color='white', color='red')
 ).add_to(m)
-
 st_data = st_folium(m, width=1200, height=800)
 
 
+st.subheader('st.map')
 history = np.zeros((0,2))
 item = np.array([43.07076877001753, 141.35328401349244])
 history = np.vstack((history, item))
